@@ -1,0 +1,103 @@
+html {
+  scroll-behavior: smooth;
+  scroll-margin-top: 8.5rem;
+}
+
+html::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #4e73df;
+  border-radius: 5rem;
+}
+
+.scrollTop {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  z-index: 10000;
+  font-size: 15px;
+  padding-top: 7px;
+  outline: none;
+  border: none;
+  border-radius: 0.6rem;
+  background-color: #4e73df;
+  color: #fff;
+  cursor: pointer;
+  visibility: hidden;
+  -webkit-transition: 0.3s linear;
+  transition: 0.3s linear;
+}
+
+.scrollTop:hover {
+  background-color: #5a5c69;
+  color: #fccf33;
+}
+
+.scrollTop.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.scrollTop span {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.tox-statusbar {
+  display: none !important;
+}
+
+.filepond--credits {
+  display: none !important;
+}
+
+.sidebar-wrapper {
+  scroll-behavior: smooth !important;
+  scroll-margin-top: 8.5rem !important;
+}
+
+.sidebar-wrapper::-webkit-scrollbar {
+  width: 0.5rem !important;
+}
+
+.sidebar-wrapper::-webkit-scrollbar-track {
+  background-color: #fff !important;
+}
+
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+  background-color: #4e73df !important;
+  border-radius: 5rem !important;
+}
+
+.select2-selection__rendered .select2-selection__choice {
+  background-color: #4e73df !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.select2-selection__rendered .select2-selection__choice button {
+  color: #fff !important;
+  border-right: #fff solid 1px !important;
+}
+
+.select2-selection__rendered .select2-selection__choice button:hover {
+  background-color: #f7f7f7 !important;
+  border: none !important;
+  color: #4e73df !important;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,98 @@
+$background_color_yellow: #fccf33;
+$color_button_hover: #e6a303;
+$text_color: #979797;
+$white: #fff;
+$footer_color: #231f20;
+$black: #130f40;
+$light_bg: #f7f7f7;
+$primary_color: #4e73df;
+
+html{
+    scroll-behavior: smooth;
+    // scroll-snap-margin-top: 8.5rem;
+    scroll-margin-top:  8.5rem;
+    
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: $white;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary_color;
+        border-radius: 5rem;
+    }
+}
+
+.scrollTop{
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    z-index: 10000;
+    font-size: 15px;
+    padding-top: 7px;
+    outline: none;
+    border: none;
+    border-radius: 0.6rem;
+    background-color: $primary_color;
+    color: #fff;
+    cursor: pointer;
+    visibility: hidden;
+    transition: 0.3s linear;
+
+    &:hover{
+        background-color: #5a5c69;
+        color: $background_color_yellow;
+    }
+    &.active{
+        visibility: visible;
+        opacity: 1;
+    }
+    span{
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        
+    }
+}
+.tox-statusbar{
+    display: none !important;
+}
+.filepond--credits{
+    display: none !important;
+}
+.sidebar-wrapper{
+    scroll-behavior: smooth !important;
+    // scroll-snap-margin-top: 8.5rem;
+    scroll-margin-top:  8.5rem !important;
+    
+    &::-webkit-scrollbar {
+        width: 0.5rem !important;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: $white !important;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary_color !important;
+        border-radius: 5rem !important;
+    }
+}
+.select2-selection__rendered{
+    .select2-selection__choice{
+        background-color: $primary_color !important;
+        color: $white !important;
+        border: none !important;
+        button{
+            color: $white !important;
+            border-right: $white solid 1px !important;
+            &:hover{
+                background-color: $light_bg !important;
+                border: none !important;
+                color: $primary_color !important;
+            }
+        }
+    }
+
+}
