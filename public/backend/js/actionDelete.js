@@ -5,7 +5,7 @@ function actionDelete(event){
     Swal.fire({
         title: `Delete Data !!!`,
         text: `
-        Continuing the action will delete the data permanently! Are you sure you want to delete the data?`,
+        Continue the action will delete the data permanently! Are you sure you want to delete the data?`,
         icon: 'warning',
         timer: 10000,
         timerProgressBar: true,
@@ -27,6 +27,13 @@ function actionDelete(event){
                             'Delete Successful.',
                             'success'
                         )
+                    }
+                    if(data.code == 'category'){
+                        $('.category_delete').attr('hidden', false).fadeIn();
+                        $('.category_delete_title').html('').append(data.title);            
+                        $('.category_delete_detail').html('').append(data.delete_fail);            
+                        $('.category_delete').delay(8000).fadeOut();            
+                        console.log(data.code);
                     }
                 },
             })

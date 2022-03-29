@@ -4,8 +4,17 @@ $text_color: #979797;
 $white: #fff;
 $footer_color: #231f20;
 $black: #130f40;
-$light_bg: #f7f7f7;
-$primary_color: #4e73df;
+$light_bg: #f6f6f9;
+$primary_color: #7380ec;
+$danger_color : #ff7782;
+$success_color: #41f1b6;
+$warning_color: #ffbb55;
+$dark_color   : #363949;
+$light_color  : rgba(132,139,200,0.18);
+$primary_variant_color: #111e88;
+$dark_variant_color: #677483;
+
+
 
 html{
     scroll-behavior: smooth;
@@ -88,11 +97,21 @@ html{
             color: $white !important;
             border-right: $white solid 1px !important;
             &:hover{
-                background-color: $light_bg !important;
+                background-color: $danger_color !important;
                 border: none !important;
-                color: $primary_color !important;
+                color: $white !important;
             }
         }
     }
 
+}
+.admin_product_img{
+    width: 100px;
+    height: 100px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }

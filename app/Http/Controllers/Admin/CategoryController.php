@@ -77,7 +77,7 @@ class CategoryController extends Controller
                 $err['description'] = "Description must be required!";
             }
             if($getName == true){
-                $err['duplicate_name'] = 'Data already exists!';
+                $err['duplicate_name'] = 'Category already exists!';
             }
             if(count($err) > 0){
                 return redirect()->back()->withInput()->with($err);
@@ -91,7 +91,7 @@ class CategoryController extends Controller
                     'parent_id'     => $parent_id
                 ]);
                 if($result){
-                    $request->session()->put('success', 'Add New Category Successful');
+                    $request->session()->put('success', '<span class="fw-bolder text-uppercase"">Success!</span><span> Add New Category Successful</span>');
                     DB::commit();
                     return redirect()->route('category.index');
                 }
@@ -180,7 +180,7 @@ class CategoryController extends Controller
                     'parent_id'     => $parent_id
                 ]);
                 if($result){
-                    $request->session()->put('success', 'Update Category Successful');
+                    $request->session()->put('success', '<span class="fw-bolder text-uppercase"">success!</span><span> Update Category Successful</span>');
                     DB::commit();
                     return redirect()->route('category.index');
                 } 
@@ -201,7 +201,11 @@ class CategoryController extends Controller
         try {
             $findProduct = $this->product->where('category_id', $id)->get();
             if($findProduct){
-                return redirect()->back()->with('delete_error', 'Can\'t delete!!! There are products in this category');
+                return response()->json([
+                    'code'        =>  'category',
+                    'title'       =>  'fail!',
+                    'delete_fail' => 'Can\'t delete. There are products in this category'
+                ]);
             } else {
                 $this->category->find($id)->delete();
                 return response()->json([
@@ -216,6 +220,52 @@ class CategoryController extends Controller
                 'message'   => 'fail'
             ], 500);
         }
-        
+    }
+    public function search(Request $request){
+        $status     = $request->get('status_filter');
+        $parent_id  = $request->get('parent_id_filter');
+        $sort       = $request->get('sort_filter');
+        $htmlOption = $this->getCategory($parent_id);
+        // dd($htmlOption);
+        $categories = [];
+        if($status == null && $parent_id == null){
+            $categories = $this->category->whereNull('deleted_at')->get();
+            if($sort == 'latest'){
+                $categories = $this->category->whereNull('deleted_at')->orderBy('created_at','desc')->get();
+            }
+            if($sort == 'oldest'){
+                $categories = $this->category->whereNull('deleted_at')->orderBy('created_at','asc')->get();
+            }
+        } else {
+            if($status != null && $parent_id == null){
+                $categories = $this->category->where('status', $status)->whereNull('deleted_at')->get();
+                if($sort == 'latest'){
+                    $categories = $this->category->where('status', $status)->whereNull('deleted_at')->orderBy('created_at','desc')->get();
+                }
+                if($sort == 'oldest'){
+                    $categories = $this->category->where('status', $status)->whereNull('deleted_at')->orderBy('created_at','asc')->get();
+                }
+            }
+            if($parent_id != null && $status == null){
+                $categories = $this->category->where('parent_id', 'like','%'.$parent_id.'%')->whereNull('deleted_at')->get();
+                if($sort == 'latest'){
+                    $categories = $this->category->where('parent_id', 'like', '%'.$parent_id.'%')->whereNull('deleted_at')->orderBy('created_at','desc')->get();
+                }
+                if($sort == 'oldest'){
+                    $categories = $this->category->where('parent_id', 'like', '%'.$parent_id.'%')->whereNull('deleted_at')->orderBy('created_at','asc')->get();
+                }
+            }
+            if($parent_id != null && $status != null){
+                $categories = $this->category->where('parent_id', 'like','%'.$parent_id.'%')->where('status', $status)->whereNull('deleted_at')->get();
+                if($sort == 'latest'){
+                    $categories = $this->category->where('parent_id', 'like', '%'.$parent_id.'%')->where('status', $status)->whereNull('deleted_at')->orderBy('created_at','desc')->get();
+                }
+                if($sort == 'oldest'){
+                    $categories = $this->category->where('parent_id', 'like', '%'.$parent_id.'%')->where('status', $status)->whereNull('deleted_at')->orderBy('created_at','asc')->get();
+                }
+            }
+        }
+       
+        return view('admin/manage_category.index', compact('categories', 'htmlOption', 'sort', 'parent_id', 'status'));
     }
 }

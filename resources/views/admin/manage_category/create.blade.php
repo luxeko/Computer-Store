@@ -2,11 +2,18 @@
 @extends('admin.layout.layout')
 
 @section('title')
-    <title>Category</title>
+    <title>Create Category</title>
 @endsection
 
 @section('name_page')
-    <h3>Create Category</h3>
+<div class="flex-row d-flex align-items-center">
+    <a class="text-dark" href="{{route('category.index')}}">Category</a> 
+    <span class="text-dark fw-bolder">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z"/>
+      </svg>&nbsp;
+    </span>
+    <a class="text-primary fw-bolder" href="{{route('category.create')}}">Create Category</a>
+</div>
 @endsection
 
 @section('content')
@@ -75,7 +82,7 @@
                                             @endif
                                         </fieldset>
                                         <fieldset class="form-group col-md-5">
-                                            <label for="parent_id">Parent Category</label>
+                                            <label for="parent_id">Category Parent</label>
                                             <select class="form-select" name="parent_id">
                                                 <option value=""> Choose </option>
                                                 {!! $htmlOption !!}

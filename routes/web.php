@@ -36,6 +36,7 @@ Route::group(['namespace'=>'Admin'], function() {
         Route::get('/delete/{id}',[CategoryController::class,'delete'])->name('category.delete');
         Route::get('/edit/{id}',[CategoryController::class,'edit'])->name('category.edit');
         Route::post('/update/{id}',[CategoryController::class,'update'])->name('category.update');
+        Route::get('/search',[CategoryController::class,'search'])->name('category.search');
     });
 
     // Xử lý CRUD Product
@@ -45,5 +46,6 @@ Route::group(['namespace'=>'Admin'], function() {
         Route::post('/store',[ProductController::class,'store'])->name('product.store');
 
         Route::get('/delete/{id}',[ProductController::class,'delete'])->name('product.delete');
+        Route::get('/search',[ProductController::class,'search'])->name('product.search');
     });
 });

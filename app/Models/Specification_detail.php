@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Product_Tag extends Model
+class Specification_detail extends Model
 {
     use HasFactory;
     use Notifiable;
     protected $guarded = [];
+   
 }
