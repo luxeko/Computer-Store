@@ -10,9 +10,11 @@ use Illuminate\Notifications\Notifiable;
 class Discount extends Model
 {
     use HasFactory;
-    use Notifiable,
-    SoftDeletes;
-    protected $table = 'discounts';
+    use Notifiable;
+    use SoftDeletes;
     protected $guarded = [];
-    protected $fillable = [];
+
+    public function product_discount(){
+        return $this->hasMany(Product_discount::class, 'discount_id');
+    }
 }

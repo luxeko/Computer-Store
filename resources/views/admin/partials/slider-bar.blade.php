@@ -43,8 +43,11 @@
                         <li class="submenu-item">
                             <a href="component-breadcrumb.html">Combo</a>
                         </li>
+                        <li class="submenu-item active_discount">
+                            <a href="{{ route('discount.index') }}">Discount <span class="message_count">20</span></a>
+                        </li>
                         <li class="submenu-item">
-                            <a href="component-button.html">Order</a>
+                            <a href="component-button.html">Order <span class="message_count">20</span></a>
                         </li>
                     </ul>
                 </li>

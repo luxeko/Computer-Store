@@ -66,6 +66,132 @@ html{
         
     }
 }
+
+.admin_product_img{
+    width: 100px;
+    height: 100px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+// Code gallery cho details_admin
+.single-product{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .details_row{
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+
+        .details_col{
+            flex-basis: 50%;
+            margin: 0 10px;
+
+            .main-img-row{
+                // box-shadow: 10px 10px 17px #d0d0d0, -10px -10px 17px #ffffff;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    padding: 10px 0px;
+                }
+            }
+            .small-img-row{
+                display: flex;
+                justify-content: space-around;
+
+                .small-img-col{
+                    flex-basis: 50%;
+                    cursor: pointer;
+                    margin: 5px 5px 5px 0px;
+                    width: 50px;
+                    box-shadow: 5px 5px 17px #d0d0d0, -5px -5px 17px #d0d0d0;
+                }
+            }
+        }
+    }
+}
+.detail_desc{
+    scroll-behavior: smooth;
+    // scroll-snap-margin-top: 8.5rem;
+    scroll-margin-top:  8.5rem;
+    
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: $white;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary_color;
+        border-radius: 5rem;
+    }
+}
+.tags {
+    list-style: none;
+    margin: 0;
+    overflow: hidden; 
+    padding: 0;
+
+    li{
+        float: left; 
+
+        .tag{
+            background: $primary_color;
+            border-radius: 3px 0 0 3px;
+            color: #fff;
+            display: inline-block;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 20px 0 23px;
+            position: relative;
+            margin: 0 10px 10px 0;
+            text-decoration: none;
+            transition: all 200ms;
+
+            &::before{
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+                content: '';
+                height: 6px;
+                left: 10px;
+                position: absolute;
+                width: 6px;
+                top: 10px;
+            }
+            &::after{
+                background: #fff;
+                border-bottom: 13px solid transparent;
+                border-left: 10px solid $primary_color;
+                border-top: 13px solid transparent;
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            &:hover{
+                background-color: crimson;
+                color: white;
+
+                &::after{
+                    border-left-color: crimson; 
+                }
+            }
+        }
+    }
+  }  
+.submenu .submenu-item .message_count{
+    background-color: $danger_color;
+    color: $white;
+    padding: 2px 10px;
+    font-size: 11px;
+    border-radius: 0.4rem;
+}
 .tox-statusbar{
     display: none !important;
 }

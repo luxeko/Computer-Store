@@ -2,13 +2,19 @@
 @extends('admin.layout.layout')
 
 @section('title')
-    <title>Product</title>
+    <title>Create Product</title>
 @endsection
 
 @section('name_page')
-    <h3>Create Product</h3>
+<div class="flex-row d-flex align-items-center">
+    <a class="text-dark" href="{{route('product.index')}}">Product</a> 
+    <span class="text-dark fw-bolder">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z"/>
+      </svg>&nbsp;
+    </span>
+    <a class="text-primary fw-bolder" href="{{route('product.create')}}">Create Product</a>
+</div>
 @endsection
-
 @section('content')
 <section id="basic-vertical-layouts">
     <div class="row match-height  d-flex justify-content-center">
@@ -147,10 +153,14 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group ">
+                                        <div class="form-group">
                                             <label for="tags">Tags</label>
                                             <div class="">
-                                                <select id="tags" name="tags[]" class="form-control tags_select_choose" multiple="multiple" value="{{ old('tags') }}"></select>
+                                                <select id="tags" name="tags[]" class="form-control tags_select_product" multiple="multiple" value="{{ old('tags') }}">
+                                                    @foreach($tags as $tag)
+                                                        <option class="" value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                                    @endforeach
+                                                </select>
                                                 {{-- <div class="form-control-icon">
                                                     <i class="bi bi-tag"></i>
                                                 </div> --}}

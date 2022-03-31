@@ -26,6 +26,10 @@ class Product extends Model
         return $this->belongsToMany(Tag::class,'product__tags', 'product_id', 'tag_id')->withTimestamps();
     }
     public function specification(){
-        return $this->hasOne(Specification::class, 'product_id');
+        return $this->hasMany(Specification::class, 'product_id');
+    }
+    public function getPriceUnit(){
+        // $check =
+        return $this->hasOne(Product_discount::class,'product_id', 'id');
     }
 }

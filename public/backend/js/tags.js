@@ -1,9 +1,12 @@
 $(document).ready(function(){
-    $(".tags_select_choose").select2({
+    $(".tags_select_product").select2({
         tags: true,
-        tokenSeparators: [',']
+        tokenSeparators: [','],
+    })
+    $(".discount_select").select2({
+        'placeholder': 'Select the values'
     })
     $('.role_select2').select2({
-        'placeholder': 'Chọn vai trò'
+        'placeholder': 'Select the roles'
     })
 });

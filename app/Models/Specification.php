@@ -11,10 +11,4 @@ class Specification extends Model
     use HasFactory;
     use Notifiable;
     protected $guarded = [];
-    public function specification_detail(){
-        return $this->hasMany(Specification::class, 'specification_id', 'specification_id');
-    }
-    public function specification_name(){
-        return $this->hasMany(Specification::class, 'specification_id', 'specification_id');
-    }
 }

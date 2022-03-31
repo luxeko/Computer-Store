@@ -7,6 +7,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Discount;
+use App\Models\Product_discount;
 use App\Models\Product_Tag;
 use App\Models\ProductImage;
 use App\Models\Specification;
@@ -25,18 +27,19 @@ class ProductController extends Controller
     private $productImage;
     private $tag;
     private $product_tag;
-    private $specification_name;
-    private $specification_detail;
     private $specification;
-    public function __construct(Product $product, Category $category, ProductImage $productImage, Tag $tag, Product_Tag $product_tag, Specification $specification, Specification_name $specification_name, Specification_detail $specification_detail )
+    private $product_discount;
+    private $discount;
+    public function __construct(Product $product, Category $category, ProductImage $productImage, Tag $tag, Product_Tag $product_tag, Specification $specification, Product_discount $product_discount, Discount $discount)
     {
         $this->product              = $product;
         $this->category             = $category;
         $this->productImage         = $productImage;
         $this->tag                  = $tag;
         $this->product_tag          = $product_tag;
-        $this->specification_name   = $specification_name;
-        $this->specification_detail = $specification_detail;
+        $this->specification        = $specification;
+        $this->product_discount     = $product_discount;
+        $this->discount             = $discount;
     }
     /**
      * Display a listing of the resource.
@@ -45,9 +48,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->product->all();
-        $htmlOption = $this->getCategory($parentId = '');
-        return view('admin.manage_product.index', compact('products', 'htmlOption'));
+        $product_discount   = $this->product_discount->all();
+        $products           = $this->product->all();
+        $htmlOption         = $this->getCategory($parentId = '');
+        $currentDate        = date('Y-m-d h:i:s', time());
+        return view('admin.manage_product.index', compact('products', 'htmlOption', 'product_discount', 'currentDate'));
     }
 
     /**
@@ -58,7 +63,8 @@ class ProductController extends Controller
     public function create()
     {
         $htmlOption = $this->getCategory($parentId = '');
-        return view('admin.manage_product.create', compact('htmlOption'));
+        $tags       = $this->tag->all();
+        return view('admin.manage_product.create', compact('htmlOption', 'tags'));
     }
     public function getCategory($parentId){
         $data = $this->category->all();
@@ -84,7 +90,10 @@ class ProductController extends Controller
             $description            =   $request->desc;
             $category_id            =   $request->category_id;
             $slug                   =   strtolower(str_replace(' ','-', $name));
-            $getName        =   $this->product->where('name', $request->name)->exists();
+            $getName                =   $this->product->where('name', $request->name)->exists();
+            $getProductCode         =   $this->product->where('product_code', $request->product_code)->exists();
+            $specification_name     =   $request->name_specification;
+            $specification_desc     =   $request->detail_specification;
             if(trim($name) == null){
                 $err['name'] = 'Name must be required!';
             }
@@ -107,7 +116,10 @@ class ProductController extends Controller
                 $err['category_id'] = 'Category must be required!';
             }
             if($getName == true){
-                $err['duplicate_name'] = 'Product already exists!';
+                $err['duplicate_name'] = 'Product is already exists!';
+            }
+            if($getProductCode == true){
+                $err['duplicate_product_code'] = 'Product-code is already exists!';
             }
             if(count($err) > 0){
                 return redirect()->back()->withInput()->with($err);
@@ -149,29 +161,17 @@ class ProductController extends Controller
                     }
                     $product->tags()->attach($tagId);
                 }
-                
+               
+                $specifications = array_combine($specification_name, $specification_desc);
                 // Insert Specification for product
-                if($request->name_specification && $request->detail_specification){
-                    // Create link Product table vs Specification table
-                    $create_specification = $product->specification()->create();
-
-                    // Insert names for Specification_names table
-                    foreach ($request->name_specification as $value) {
-                        $this->specification_name->create([
-                            'specification_id'  =>  $create_specification->id,
-                            'name'              =>  $value
+                if($specification_name){
+                    foreach($specifications as $key => $value){
+                        $product->specification()->create([
+                            'name'  =>  $key,
+                            'desc'  =>  $value
                         ]);
-                    }        
-                    // Insert details for Specification_details table
-                    foreach ($request->detail_specification as $value) {
-                        $this->specification_detail->create([
-                            'specification_id'  =>  $create_specification->id,
-                            'detail'            =>  $value
-                        ]);
-                    }         
+                    }
                 }
-                
-                // dd(123);
                 DB::commit();
                 if($product){
                     $request->session()->put('success', '<span class="fw-bolder text-uppercase"">success!</span><span> Add New Product Successful</span>');
@@ -191,9 +191,29 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request)
     {
-        //
+        return $this->product->findOrFail($request->id);
+    }
+    public function get_category_name($id)
+    {
+        $name = $this->category->find($id);
+        return $name;
+    }
+    public function get_tag($product_id){
+        $tag_id = $this->product_tag->where('product_id', '=', $product_id)->get('tag_id');
+        $tag = $this->tag->find($tag_id);
+        return $tag;
+    }
+    public function get_thumbnail($product_id)
+    {
+        $thumbnail = $this->productImage->where('product_id',"=", $product_id)->get('thumbnails_path');
+        return $thumbnail;
+    }
+    public function get_specification($product_id)
+    {
+        $specification = $this->specification->where('product_id', $product_id)->get();
+        return $specification;
     }
 
     /**

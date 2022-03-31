@@ -44,7 +44,7 @@
         <script src="{{ URL::asset('backend/js/pages/dashboard.js') }}"></script>
         <script src="{{ URL::asset('backend/js/sweetalert2@11.js') }}"></script>
         <script src="{{ URL::asset('backend/js/main.js') }}"></script>
-        <script src="{{ URL::asset('backend/js/loading.js') }}"></script>
+        {{-- <script src="{{ URL::asset('backend/js/loading.js') }}"></script> --}}
         <script src="{{ URL::asset('backend/js/scroll_top.js') }}"></script>
         <script src="{{ URL::asset('backend/js/select2.min.js') }}"></script>
   
@@ -67,6 +67,11 @@
             // Simple Datatable
             let table2 = document.querySelector('#table_product');
             let dataTable2 = new simpleDatatables.DataTable(table2);
+        </script>
+        <script>
+            // Simple Datatable
+            let table3 = document.querySelector('#table_discount');
+            let dataTable3 = new simpleDatatables.DataTable(table3);
         </script>
     </body>
 </html>
