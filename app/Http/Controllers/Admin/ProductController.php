@@ -267,6 +267,7 @@ class ProductController extends Controller
         $sort       =   $request->get('sort_filter');
         $category   =   $request->get('category_filter');
         $htmlOption =   $this->getCategory($category);
+        $currentDate        = date('Y-m-d h:i:s', time());
         $products   =   [];
         if($category == null && $status == null){
             $products = $this->product->whereNull('deleted_at')->get();
@@ -333,6 +334,6 @@ class ProductController extends Controller
                 }
             }
         }        
-        return view('admin.manage_product.index', compact('products', 'htmlOption', 'status', 'sort'));
+        return view('admin.manage_product.index', compact('products', 'htmlOption', 'status', 'sort', 'currentDate'));
     }
 }

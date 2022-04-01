@@ -77,7 +77,6 @@ class DiscountController extends Controller
             $category_id        =   $request->category_id;
             $getName            =   $this->discount->where('name', $name)->exists();
             $dateNow            =   date("Y-m-d H:i:s");
-            
             if(trim($name) == null) {
                 $err['name'] = 'Name of discount must be required!';
             }
@@ -134,28 +133,32 @@ class DiscountController extends Controller
                 ];
 
                 // Logic để check xem sản phẩm có tồn tại discount?
-                foreach ($product_id as $item) {
-                    $get_discount_by_id_product = $this->product_discount->where('product_id', $item)->get();
-                    // Nếu đã tồn tại thì check xem thời gian discount còn không (lấy date_end so sánh với date_current?
-                    // - false: thì cho phép thêm discount
-                    // - true thì quay lại form thêm discount + báo lỗi
-                    if($get_discount_by_id_product){
-                        foreach($get_discount_by_id_product as $value){
-                            if($value->date_end > $value->date_now){
-                                $err_product['product_has_discount'] = "ERROR! The product already has a discount or the discount period has not ended";
-                                return redirect()->back()->withInput()->with($err_product);
+                if($product_id){
+                    foreach ($product_id as $item) {
+                        $get_discount_by_id_product = $this->product_discount->where('product_id', $item)->get();
+                        // Nếu đã tồn tại thì check xem thời gian discount còn không (lấy date_end so sánh với date_current?
+                        // - false: thì cho phép thêm discount
+                        // - true thì quay lại form thêm discount + báo lỗi
+                        if($get_discount_by_id_product){
+                            foreach($get_discount_by_id_product as $value){
+                                if($value->date_end > $value->date_now){
+                                    $err_product['product_has_discount'] = "ERROR! The product already has a discount or the discount period has not ended";
+                                    return redirect()->back()->withInput()->with($err_product);
+                                }
                             }
                         }
                     }
                 }
-                // login check category_id tương tự
-                foreach ($category_id as $item) {
-                    $get_discount_by_id_category = $this->product_discount->where('category_id', $category_id)->get();
-                    if($get_discount_by_id_category){
-                        foreach($get_discount_by_id_category as $value){
-                            if($value->date_end > $value->date_now){
-                                $err_category['category_has_discount'] = "ERROR! The category already has a discount or the discount period has not ended";
-                                return redirect()->back()->withInput()->with($err_category);
+                if($category_id){
+                    // login check category_id tương tự
+                    foreach ($category_id as $item) {
+                        $get_discount_by_id_category = $this->product_discount->where('category_id', $category_id)->get();
+                        if($get_discount_by_id_category){
+                            foreach($get_discount_by_id_category as $value){
+                                if($value->date_end > $value->date_now){
+                                    $err_category['category_has_discount'] = "ERROR! The category already has a discount or the discount period has not ended";
+                                    return redirect()->back()->withInput()->with($err_category);
+                                }
                             }
                         }
                     }
@@ -163,12 +166,12 @@ class DiscountController extends Controller
                 // Logic để phân loại khuyến mãi là % hay $
                 if($discount_type == 'Percent'){
                     $data['discount']   =   $discount_percent;
-                } 
-                if($discount_type == 'Price'){
+                } elseif($discount_type == 'Price') {
                     $data['discount']   =   $discount_price;
                 }
                 // Khi mọi điều kiện thoả mãn thì insert $data bào table discounts
                 $discount = $this->discount->create($data);
+
                 if($apply_for == 'Product'){
                     $price_unit = 0;
                     foreach($product_id as $id){
@@ -188,15 +191,17 @@ class DiscountController extends Controller
                             'date_end'      =>  $date_end,
                         ]);
                     }
-                } elseif($apply_for == 'Category'){
+                } 
+                if($apply_for == 'Category'){
                     $price_unit = 0;
                     foreach($category_id as $id){
                         $products = $this->product->where('category_id', $id)->get();
                         foreach($products as $product){
-                            $check_product_in_discount = $this->product_discount->where('product_id',$product->id)->get();
+                            $check_product_in_discount = $this->product_discount->where('product_id', '=', $product->id)->first();
+                           
                             if($check_product_in_discount){
-                                $err_category['category_has_discount'] = "ERROR! In the category containing the product the product is discounted";
-                                return redirect()->back()->withInput()->with($err_category);
+                                $err_product_in_category['product_in_category_has_discount'] = "ERROR! In the category containing the product the product is discounted";
+                                return redirect()->back()->withInput()->with($err_product_in_category);
                             } else {
                                 if($discount_type == 'Price'){
                                     $price_unit = $product->price - $discount_price;
@@ -206,7 +211,7 @@ class DiscountController extends Controller
                             }
                             $discount->product_discount()->create([
                                 'product_id'    =>  $product->id,
-                                'category_id'   =>  $id->id,
+                                'category_id'   =>  $id,
                                 'price_unit'    =>  $price_unit,
                                 'date_start'    =>  $date_start,
                                 'date_end'      =>  $date_end,

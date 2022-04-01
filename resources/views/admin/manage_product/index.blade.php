@@ -55,6 +55,26 @@
                         </select>
                     </fieldset>
                     <fieldset class="form-group me-3">
+                        <label for="discount_filter">Discount</label>
+                        <select class="form-select fw-bold" name="discount_filter" id="discount_filter">
+                            @if(isset($status) && $status === "yes")
+                                <option value=""> Choose </option>  
+                                <option selected value="yes">Yes</option>
+                                <option value="no">No</option>
+                            @endif
+                            @if(isset($status) && $status === "no")
+                                <option value=""> Choose </option>  
+                                <option value="yes">Yes</option>
+                                <option selected value="no">No</option>
+                            @endif
+                            @if(empty($status))
+                                <option value=""> Choose </option>  
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            @endif
+                        </select>
+                    </fieldset>
+                    <fieldset class="form-group me-3">
                         <label for="sort_filter">Sort</label>
                         <select class="form-select fw-bold" name="sort_filter" id="sort_filter">
                             @if(isset($sort) && $sort === 'latest')
@@ -122,17 +142,17 @@
                         <td class="text-center">{{ $stt++ }}</td>
                         <td class="admin_product_img text-center"><img src="{{ $item->image_path }}" ></td>
                         <td class="text-dark fw-bolder">{{ $item->name }}</td>
-                        <td>
-                            @if (optional($item->getPriceUnit)->price_unit)
-                                @if (optional($item->getPriceUnit)->date_end >= $currentDate && optional($item->getPriceUnit)->date_start <=$currentDate && optional($item->getPriceUnit)->date_end > optional($item->getPriceUnit)->date_start)
-                                    <p class="text-danger fw-bold fst-italic">$ {{optional($item->getPriceUnit)->price_unit}}</p>  
-                                @else
-                                    <p class="text-success fw-bold fst-italic">$ {{$item->price}}</p>  
-                                @endif
+                        
+                        @if (optional($item->getPriceUnit)->price_unit)
+                            @if (optional($item->getPriceUnit)->date_end >= $currentDate && optional($item->getPriceUnit)->date_start <=$currentDate && optional($item->getPriceUnit)->date_end > optional($item->getPriceUnit)->date_start)
+                                <td class="text-danger fw-bold fst-italic">$ {{optional($item->getPriceUnit)->price_unit}}</td>  
                             @else
-                                <p class="text-success fw-bold fst-italic">$ {{$item->price}}</p>  
+                                <td class="text-success fw-bold fst-italic">$ {{$item->price}}</td>  
                             @endif
-                        </td>
+                        @else
+                            <td class="text-success fw-bold fst-italic">$ {{$item->price}}</td>  
+                        @endif
+                        
                         <td>{{ optional($item->category)->name }}</td>
                         <td class="text-center">
                             @if ($item->status === "Available")

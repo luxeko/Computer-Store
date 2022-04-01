@@ -33,6 +33,10 @@
                                     <div style="font-size: 14px" class="alert alert-danger fw-bold discount_alert mb-4">{{ Session::get('category_has_discount') }}</div>
                                     {{ Session::put('category_has_discount', '') }}
                                 @endif
+                                @if (Session::has('product_in_category_has_discount'))
+                                    <div style="font-size: 14px" class="alert alert-danger fw-bold discount_alert mb-4">{{ Session::get('product_in_category_has_discount') }}</div>
+                                    {{ Session::put('product_in_category_has_discount', '') }}
+                                @endif
                                 <div class="row">
                                     <div class="col-md-8 form-group has-icon-left">
                                         <div>
